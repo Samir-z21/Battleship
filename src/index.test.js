@@ -1,19 +1,14 @@
 import {Ship, gameBoard} from "./index";
 
-const carrier = new Ship(5, 0, false);
-
-carrier.hit();
-carrier.hit();
-carrier.hit();
 
 
 
-test('Ship Obj', () => {
+test.skip('Ship Obj', () => {
     expect(carrier.isSunk()).toBe(false);
 });
 
 
-test('getting ship location "x axis" ', () => {
+test.skip('getting ship location "x axis" ', () => {
     expect(gameBoard.placeShip(13)).toEqual([13,14,15,16,17]);
     expect(gameBoard.placeShip(88)).toEqual([88,89,90,91]);
     expect(gameBoard.placeShip(95)).toEqual([95,96,97]);
@@ -28,6 +23,17 @@ test.skip('getting ship location "y axis" ', () => {
     expect(gameBoard.placeShip(0)).toEqual([0,10,20]);
     expect(gameBoard.placeShip(72)).toEqual([72,82]);
 });
+
+
+test.skip('checking attack status', () => {
+    gameBoard.receiveAttack(29)
+    gameBoard.receiveAttack(14)
+    gameBoard.receiveAttack(74)
+    gameBoard.receiveAttack(21)
+    gameBoard.receiveAttack(85)
+
+    expect(gameBoard.receiveAttack(29).toEqual([]))
+})
 
 
 

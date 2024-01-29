@@ -2,9 +2,13 @@ import './home.css';
 
 //Global value
 let axis = "x";
+const shipObjs = [];
 
+// Console log purposes
 const gameBoardArray = new Array(100).fill(0);
-let shipCounter = 1;
+
+
+
 
 class Ship {
     constructor (length, hits, sunk) {
@@ -18,13 +22,15 @@ class Ship {
     }
 
     isSunk () {
-        if (this.hits >= this.length) return true;
-        else return false;
+        if (this.hits >= this.length) 
+        this.sunk = true;
     }
 }
 
 const gameBoard = (() => {
-    const errorInvalidPosition = "can't place your ship here"
+    const errorInvalidPosition = "can't place your ship here";
+    let shipCounter = 1;
+
     const placeShip = value => {
         let shipArray = [];
         switch (shipCounter) {
@@ -34,6 +40,7 @@ const gameBoard = (() => {
                     return errorInvalidPosition
                 } 
                 const carrier = new Ship(5, 0, false);
+                shipObjs.push(carrier)
             break;
                 
             case 2:
@@ -42,6 +49,7 @@ const gameBoard = (() => {
                     return errorInvalidPosition
                 } 
                 const battleship = new Ship(4, 0, false);
+                shipObjs.push(battleship)
             break;
             
             case 3:
@@ -50,6 +58,8 @@ const gameBoard = (() => {
                     return errorInvalidPosition
                 } 
                 const destroyer = new Ship(3, 0, false);
+                shipObjs.push(destroyer)
+
             break;
 
             case 4: 
@@ -58,6 +68,8 @@ const gameBoard = (() => {
                     return errorInvalidPosition 
                 } 
                 const submarine = new Ship(3, 0, false);
+                shipObjs.push(submarine)
+
             break;
             
             case 5: 
@@ -66,11 +78,11 @@ const gameBoard = (() => {
                     return errorInvalidPosition
                 }
                 const patrolBoat = new Ship(2, 0, false);
+                shipObjs.push(patrolBoat)
+
             break;
         }
         
-        console.log(shipArray)
-
         // extra error handling
         if (shipArray === []) return errorInvalidPosition
         else {
@@ -83,19 +95,72 @@ const gameBoard = (() => {
             shipCounter++
         }
         
-
-        
-
-      
-        console.log(gameBoardArray);
-        
+        // test purposes
+        return shipArray
+    }
     
-        return shipArray 
-    } 
+    const receiveAttack = coordinateVal => {
+        if (!(gameBoardArray[coordinateVal] === 0 || 
+            gameBoardArray[coordinateVal] === 1 || 
+            gameBoardArray[coordinateVal] === 2 || 
+            gameBoardArray[coordinateVal] === 3 || 
+            gameBoardArray[coordinateVal] === 4 || 
+            gameBoardArray[coordinateVal] === 5
+        )) {
+            return `${coordinateVal} already recevied attack`
+        } else {
+            switch (gameBoardArray[coordinateVal]) {
+                case 0 :
+                    gameBoardArray[coordinateVal] = "miss";
+                break
+    
+                case 1: 
+                    shipObjs[0].hit();
+                    shipObjs[0].isSunk();
+                    gameBoardArray[coordinateVal] = '1 hit';
+                break
+    
+                case 2: 
+                    shipObjs[1].hit();
+                    shipObjs[1].isSunk();
+                    gameBoardArray[coordinateVal] = '2 hit';
+                break 
+    
+                case 3: 
+                    shipObjs[2].hit();
+                    shipObjs[2].isSunk();
+                    gameBoardArray[coordinateVal] = '3 hit';
+                break
+    
+                case 4: 
+                    shipObjs[3].hit();
+                    shipObjs[3].isSunk();
+                    gameBoardArray[coordinateVal] = '4 hit';
+                break
+    
+                case 5: 
+                    shipObjs[4].hit();
+                    shipObjs[4].isSunk();
+                    gameBoardArray[coordinateVal] = '5 hit';
+                break
+            } 
+
+            endGameCheck()
+        }
+    }
+
+
+    const endGameCheck = () => {
+        if (!(shipObjs.find(element => element.sunk === false))) return "All ships have sunk"; 
+        else return "Not all ships have sunk"
+    }
+
+
 
     return {
         placeShip, 
-
+        receiveAttack,
+        endGameCheck
     }
 })()
 
@@ -121,7 +186,25 @@ function validPlacement (lengthShip, value, gameBoardArray, shipArray) {
     return true
 }
 
+gameBoard.placeShip(13)
+gameBoard.placeShip(88)
+gameBoard.placeShip(95)
+gameBoard.placeShip(0)
+gameBoard.placeShip(84)
 
+
+gameBoard.receiveAttack(29)
+gameBoard.receiveAttack(14)
+gameBoard.receiveAttack(74)
+gameBoard.receiveAttack(21)
+gameBoard.receiveAttack(85)
+gameBoard.receiveAttack(84)
+
+
+console.log(gameBoardArray)
+console.log(shipObjs)
+console.log(gameBoard.receiveAttack(29))
+console.log(gameBoard.endGameCheck())
 
 export { Ship, gameBoard}
 
