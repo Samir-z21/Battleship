@@ -1,14 +1,12 @@
 import './home.css';
+import placeCpuShips from './cpuControl';
 
 //Global value
 let axis = "x";
-const shipObjs = [];
+const playerShipObjs = [];
 
 // Console log purposes
-const gameBoardArray = new Array(100).fill(0);
-
-
-
+const playerGameBoardArray = new Array(100).fill(0);
 
 class Ship {
     constructor (length, hits, sunk) {
@@ -32,11 +30,11 @@ const gameBoard = (() => {
     let shipCounter = 1;
 
     const placeShip = value => {
-        let shipArray = [];
+        let playerShipArray = [];
         switch (shipCounter) {
             case 1:
-                if (!validPlacement(5, value, gameBoardArray, shipArray, shipCounter)) {
-                    shipArray = [];
+                if (!validPlacement(5, value, playerGameBoardArray, playerShipArray, shipCounter)) {
+                    playerShipArray = [];
                     return errorInvalidPosition
                 } 
                 const carrier = new Ship(5, 0, false);
@@ -44,8 +42,8 @@ const gameBoard = (() => {
             break;
                 
             case 2:
-                if (!validPlacement(4, value, gameBoardArray, shipArray, shipCounter)) {
-                    shipArray = [];
+                if (!validPlacement(4, value, playerGameBoardArray, playerShipArray, shipCounter)) {
+                    playerShipArray = [];
                     return errorInvalidPosition
                 } 
                 const battleship = new Ship(4, 0, false);
@@ -53,8 +51,8 @@ const gameBoard = (() => {
             break;
             
             case 3:
-                if (!validPlacement(3, value, gameBoardArray, shipArray, shipCounter)) {
-                    shipArray = [];
+                if (!validPlacement(3, value, playerGameBoardArray, playerShipArray, shipCounter)) {
+                    playerShipArray = [];
                     return errorInvalidPosition
                 } 
                 const destroyer = new Ship(3, 0, false);
@@ -63,8 +61,8 @@ const gameBoard = (() => {
             break;
 
             case 4: 
-                if (!validPlacement(3, value, gameBoardArray, shipArray, shipCounter)) {
-                    shipArray = [];
+                if (!validPlacement(3, value, playerGameBoardArray, playerShipArray, shipCounter)) {
+                    playerShipArray = [];
                     return errorInvalidPosition 
                 } 
                 const submarine = new Ship(3, 0, false);
@@ -73,8 +71,8 @@ const gameBoard = (() => {
             break;
             
             case 5: 
-                if (!validPlacement(2, value, gameBoardArray, shipArray, shipCounter)) {
-                    shipArray = [];
+                if (!validPlacement(2, value, playerGameBoardArray, playerShipArray, shipCounter)) {
+                    playerShipArray = [];
                     return errorInvalidPosition
                 }
                 const patrolBoat = new Ship(2, 0, false);
@@ -84,11 +82,11 @@ const gameBoard = (() => {
         }
         
         // extra error handling
-        if (shipArray === []) return errorInvalidPosition
+        if (playerShipArray === []) return errorInvalidPosition
         else {
-            for (const element of shipArray ){
+            for (const element of playerShipArray ){
                 if (gameBoardArray[element] !== 0) {
-                    shipArray = [];
+                    playerShipArray = [];
                     break
                 } else gameBoardArray[element] = shipCounter; 
             }
@@ -96,10 +94,10 @@ const gameBoard = (() => {
         }
         
         // test purposes
-        return shipArray
+        return playerShipArray
     }
     
-    const receiveAttack = coordinateVal => {
+    const receiveAttack = (coordinateVal, gameBoardArray, shipObjs) => {
         if (!(gameBoardArray[coordinateVal] === 0 || 
             gameBoardArray[coordinateVal] === 1 || 
             gameBoardArray[coordinateVal] === 2 || 
@@ -145,12 +143,12 @@ const gameBoard = (() => {
                 break
             } 
 
-            endGameCheck()
+            endGameCheck(shipObjs)
         }
     }
 
 
-    const endGameCheck = () => {
+    const endGameCheck = shipObjs => {
         if (!(shipObjs.find(element => element.sunk === false))) return "All ships have sunk"; 
         else return "Not all ships have sunk"
     }
@@ -166,19 +164,19 @@ const gameBoard = (() => {
 
 
 
-function validPlacement (lengthShip, value, gameBoardArray, shipArray) {
+function validPlacement (lengthShip, value, gameBoardArray, playerShipArray) {
     if (axis === 'x') {
         for (let i = 0; i < lengthShip; i++) {
-            if (gameBoardArray[value + i] !== 0) return false;
+            if (gameBoardArray[value + i] !== 0 || gameBoardArray[value + i] > 99 ) return false;
             else {
-                shipArray.push(value + i); 
+                playerShipArray.push(value + i); 
             }
         }
     } else if (axis === 'y') {
         for (let i = 0; i < lengthShip; i++) {
-            if (gameBoardArray[value + (i*10)] !== 0) return false
+            if (gameBoardArray[value + (i*10)] !== 0 || gameBoardArray[value + i] > 99) return false
             else {
-                shipArray.push(value + (i*10)); 
+                playerShipArray.push(value + (i*10)); 
             }
         }
     }
@@ -186,25 +184,27 @@ function validPlacement (lengthShip, value, gameBoardArray, shipArray) {
     return true
 }
 
-gameBoard.placeShip(13)
-gameBoard.placeShip(88)
-gameBoard.placeShip(95)
-gameBoard.placeShip(0)
-gameBoard.placeShip(84)
+// gameBoard.placeShip(13)
+// gameBoard.placeShip(88)
+// gameBoard.placeShip(95)
+// gameBoard.placeShip(0)
+// gameBoard.placeShip(84)
 
 
-gameBoard.receiveAttack(29)
-gameBoard.receiveAttack(14)
-gameBoard.receiveAttack(74)
-gameBoard.receiveAttack(21)
-gameBoard.receiveAttack(85)
-gameBoard.receiveAttack(84)
+// gameBoard.receiveAttack(29)
+// gameBoard.receiveAttack(14)
+// gameBoard.receiveAttack(74)
+// gameBoard.receiveAttack(21)
+// gameBoard.receiveAttack(85)
+// gameBoard.receiveAttack(84)
 
 
-console.log(gameBoardArray)
-console.log(shipObjs)
-console.log(gameBoard.receiveAttack(29))
-console.log(gameBoard.endGameCheck())
+// console.log(gameBoardArray)
+// console.log(shipObjs)
+// console.log(gameBoard.receiveAttack(29))
+// console.log(gameBoard.endGameCheck())
 
-export { Ship, gameBoard}
+placeCpuShips()
+
+export {Ship, gameBoard, playerGameBoardArray, playerShipObjs}
 
