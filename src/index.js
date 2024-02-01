@@ -2,7 +2,7 @@ import './home.css';
 import placeCpuShips from './cpuControl';
 
 //Global value
-let axis = "x";
+let axis = "y";
 const playerShipObjs = [];
 
 // Console log purposes
@@ -33,50 +33,50 @@ const gameBoard = (() => {
         let playerShipArray = [];
         switch (shipCounter) {
             case 1:
-                if (!validPlacement(5, value, playerGameBoardArray, playerShipArray, shipCounter)) {
+                if (!validPlacement(5, value, playerShipArray, shipCounter)) {
                     playerShipArray = [];
                     return errorInvalidPosition
                 } 
                 const carrier = new Ship(5, 0, false);
-                shipObjs.push(carrier)
+                playerShipObjs.push(carrier)
             break;
                 
             case 2:
-                if (!validPlacement(4, value, playerGameBoardArray, playerShipArray, shipCounter)) {
+                if (!validPlacement(4, value, playerShipArray, shipCounter)) {
                     playerShipArray = [];
                     return errorInvalidPosition
                 } 
                 const battleship = new Ship(4, 0, false);
-                shipObjs.push(battleship)
+                playerShipObjs.push(battleship)
             break;
             
             case 3:
-                if (!validPlacement(3, value, playerGameBoardArray, playerShipArray, shipCounter)) {
+                if (!validPlacement(3, value, playerShipArray, shipCounter)) {
                     playerShipArray = [];
                     return errorInvalidPosition
                 } 
                 const destroyer = new Ship(3, 0, false);
-                shipObjs.push(destroyer)
+                playerShipObjs.push(destroyer)
 
             break;
 
             case 4: 
-                if (!validPlacement(3, value, playerGameBoardArray, playerShipArray, shipCounter)) {
+                if (!validPlacement(3, value, playerShipArray, shipCounter)) {
                     playerShipArray = [];
                     return errorInvalidPosition 
                 } 
                 const submarine = new Ship(3, 0, false);
-                shipObjs.push(submarine)
+                playerShipObjs.push(submarine)
 
             break;
             
             case 5: 
-                if (!validPlacement(2, value, playerGameBoardArray, playerShipArray, shipCounter)) {
+                if (!validPlacement(2, value, playerShipArray, shipCounter)) {
                     playerShipArray = [];
                     return errorInvalidPosition
                 }
                 const patrolBoat = new Ship(2, 0, false);
-                shipObjs.push(patrolBoat)
+                playerShipObjs.push(patrolBoat)
 
             break;
         }
@@ -85,10 +85,10 @@ const gameBoard = (() => {
         if (playerShipArray === []) return errorInvalidPosition
         else {
             for (const element of playerShipArray ){
-                if (gameBoardArray[element] !== 0) {
+                if (playerGameBoardArray[element] !== 0) {
                     playerShipArray = [];
                     break
-                } else gameBoardArray[element] = shipCounter; 
+                } else playerGameBoardArray[element] = shipCounter; 
             }
             shipCounter++
         }
@@ -97,59 +97,59 @@ const gameBoard = (() => {
         return playerShipArray
     }
     
-    const receiveAttack = (coordinateVal, gameBoardArray, shipObjs) => {
-        if (!(gameBoardArray[coordinateVal] === 0 || 
-            gameBoardArray[coordinateVal] === 1 || 
-            gameBoardArray[coordinateVal] === 2 || 
-            gameBoardArray[coordinateVal] === 3 || 
-            gameBoardArray[coordinateVal] === 4 || 
-            gameBoardArray[coordinateVal] === 5
+    const receiveAttack = coordinateVal => {
+        if (!(playerGameBoardArray[coordinateVal] === 0 || 
+            playerGameBoardArray[coordinateVal] === 1 || 
+            playerGameBoardArray[coordinateVal] === 2 || 
+            playerGameBoardArray[coordinateVal] === 3 || 
+            playerGameBoardArray[coordinateVal] === 4 || 
+            playerGameBoardArray[coordinateVal] === 5
         )) {
             return `${coordinateVal} already recevied attack`
         } else {
-            switch (gameBoardArray[coordinateVal]) {
+            switch (playerGameBoardArray[coordinateVal]) {
                 case 0 :
-                    gameBoardArray[coordinateVal] = "miss";
+                    playerGameBoardArray[coordinateVal] = "miss";
                 break
     
                 case 1: 
-                    shipObjs[0].hit();
-                    shipObjs[0].isSunk();
-                    gameBoardArray[coordinateVal] = '1 hit';
+                    playerShipObjs[0].hit();
+                    playerShipObjs[0].isSunk();
+                    playerGameBoardArray[coordinateVal] = '1 hit';
                 break
     
                 case 2: 
-                    shipObjs[1].hit();
-                    shipObjs[1].isSunk();
-                    gameBoardArray[coordinateVal] = '2 hit';
+                    playerShipObjs[1].hit();
+                    playerShipObjs[1].isSunk();
+                    playerGameBoardArray[coordinateVal] = '2 hit';
                 break 
     
                 case 3: 
-                    shipObjs[2].hit();
-                    shipObjs[2].isSunk();
-                    gameBoardArray[coordinateVal] = '3 hit';
+                    playerShipObjs[2].hit();
+                    playerShipObjs[2].isSunk();
+                    playerGameBoardArray[coordinateVal] = '3 hit';
                 break
     
                 case 4: 
-                    shipObjs[3].hit();
-                    shipObjs[3].isSunk();
-                    gameBoardArray[coordinateVal] = '4 hit';
+                    playerShipObjs[3].hit();
+                    playerShipObjs[3].isSunk();
+                    playerGameBoardArray[coordinateVal] = '4 hit';
                 break
     
                 case 5: 
-                    shipObjs[4].hit();
-                    shipObjs[4].isSunk();
-                    gameBoardArray[coordinateVal] = '5 hit';
+                    playerShipObjs[4].hit();
+                    playerShipObjs[4].isSunk();
+                    playerGameBoardArray[coordinateVal] = '5 hit';
                 break
             } 
 
-            endGameCheck(shipObjs)
+            endGameCheck()
         }
     }
 
 
-    const endGameCheck = shipObjs => {
-        if (!(shipObjs.find(element => element.sunk === false))) return "All ships have sunk"; 
+    const endGameCheck = () => {
+        if (!(playerShipObjs.find(element => element.sunk === false))) return "All ships have sunk"; 
         else return "Not all ships have sunk"
     }
 
@@ -164,17 +164,25 @@ const gameBoard = (() => {
 
 
 
-function validPlacement (lengthShip, value, gameBoardArray, playerShipArray) {
+function validPlacement (lengthShip, value, playerShipArray) {
+    
     if (axis === 'x') {
+        let findX = (Math.floor(value/10)*10) + 9; 
         for (let i = 0; i < lengthShip; i++) {
-            if (gameBoardArray[value + i] !== 0 || gameBoardArray[value + i] > 99 ) return false;
+            if (playerGameBoardArray[value + i] !== 0 || 
+                value + i > 99  ||
+                value + i > findX)
+                return false;
             else {
                 playerShipArray.push(value + i); 
             }
+            
+            
         }
     } else if (axis === 'y') {
         for (let i = 0; i < lengthShip; i++) {
-            if (gameBoardArray[value + (i*10)] !== 0 || gameBoardArray[value + i] > 99) return false
+            if (playerGameBoardArray[value + (i*10)] !== 0 || 
+                value + (i*10) > 99) return false
             else {
                 playerShipArray.push(value + (i*10)); 
             }
@@ -184,11 +192,11 @@ function validPlacement (lengthShip, value, gameBoardArray, playerShipArray) {
     return true
 }
 
-// gameBoard.placeShip(13)
-// gameBoard.placeShip(88)
-// gameBoard.placeShip(95)
-// gameBoard.placeShip(0)
-// gameBoard.placeShip(84)
+// console.log(gameBoard.placeShip(13))
+// console.log(gameBoard.placeShip(88))
+// console.log(gameBoard.placeShip(95))
+// console.log(gameBoard.placeShip(0))
+// console.log(gameBoard.placeShip(84))
 
 
 // gameBoard.receiveAttack(29)
@@ -199,8 +207,8 @@ function validPlacement (lengthShip, value, gameBoardArray, playerShipArray) {
 // gameBoard.receiveAttack(84)
 
 
-// console.log(gameBoardArray)
-// console.log(shipObjs)
+// console.log(playerGameBoardArray)
+// console.log(playerShipObjs)
 // console.log(gameBoard.receiveAttack(29))
 // console.log(gameBoard.endGameCheck())
 

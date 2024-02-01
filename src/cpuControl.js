@@ -23,66 +23,78 @@ const placeCpuShips = () => {
     
     let shipCounter = 1;
 
-    cpuShipObjs.forEach((ship, shipIndex) => {
+    cpuShipObjs.forEach(ship => {
         let modifiedArray = [];
-        // const axis = Math.round(Math.random()); // 0 = x, 1 = y
-        
+        let continueLoop = true;
+        const axis = Math.round(Math.random()); // 0 = x, 1 = y
+        console.log(axis)
         cpuGameBoardArray.forEach((boardElement, boardIndex) => {
             if (boardElement === 0) modifiedArray.push(boardIndex);
         });
-
         
-        for (let i = 1; i < ship.length; i++) {
-            modifiedArray.pop()
-        }
+        if (!axis) {
+            while (continueLoop) {
+                let validPlacement = true;
 
+                const firstDigit = Math.floor(Math.random() * 9);
+                const secondDigit = Math.floor(Math.random() * 9);
 
-        let randomIndex = modifiedArray[Math.floor(Math.random() * modifiedArray.length)];
+                let randomIndex = Number(firstDigit.toString() + secondDigit.toString());
 
-        let continueLoop = true
-        while (continueLoop) {
-            let validPlacement = true;
-            for (let i = 0; i < ship.length; i++) {
-                if (cpuGameBoardArray[randomIndex + i] !== 0) {
-                    validPlacement = false;
-                    break;
-                } 
-            }
-
-            if (validPlacement) {
-                for (let i = 0; i < ship.length; i++) {
-                    cpuGameBoardArray[randomIndex + i] = shipCounter;
-                    // to exit loop
-                    continueLoop = false;
+                if (randomIndex + ship.length - 1 > firstDigit * 10 + 9) {
+                    randomIndex = (firstDigit * 10 + 9) - ship.length + 1 
                 }
-            } else {
-                randomIndex = modifiedArray[Math.floor(Math.random() * modifiedArray.length)];
-                // to continue loop
-                continueLoop = true;
-            } 
-            
+
+                console.log(randomIndex)
+
+                for (let i = 0; i < ship.length; i++) {
+                    if (cpuGameBoardArray[randomIndex + i] !== 0) {
+                        validPlacement = false;
+                        break;
+                    } 
+                }
+    
+                if (validPlacement) {
+                    for (let i = 0; i < ship.length; i++) {
+                        cpuGameBoardArray[randomIndex + i] = shipCounter;
+                        // to exit loop
+                        continueLoop = false;
+                    }
+                }
+            }
+        } else {
+            while (continueLoop) {
+                let validPlacement = true;
+
+                const firstDigit = Math.floor(Math.random() * 9);
+                const secondDigit = Math.floor(Math.random() * 9);
+
+                let randomIndex = Number(firstDigit.toString() + secondDigit.toString());
+
+                if (randomIndex + ((ship.length -1) * 10) > 99 ) {
+                    randomIndex = (99 - randomIndex);    
+                }
+
+                console.log(randomIndex)
+
+
+                for (let i = 0; i < ship.length; i++) {
+                    if (cpuGameBoardArray[randomIndex + (i*10)] !== 0) {
+                        validPlacement = false;
+                        break;
+                    }
+                }
+
+                if (validPlacement) {
+                    for (let i = 0; i < ship.length; i++) {
+                        cpuGameBoardArray[randomIndex + (i*10)] = shipCounter;
+                    }
+                    // to exit while loop
+                    continueLoop = false;
+                } 
+            }     
         }
-        
-        shipCounter++;
-
-        
-
-    // } else {
-    //             const potentialY = availablePositions[randomIndex];
-    //             isPlacementValid = cpuGameBoardArray
-    //                 .slice(potentialY, potentialY + shipLength )
-    //                 .every(value => value === 0);
-
-            
-
-    //         console.log(modifiedArray)
-
-    //         const randomIndex = modifiedArray[Math.floor(Math.random()*modifiedArray.length - objElement.length)]; 
-
-    //         for (let i = 0; i < objElement.length; i++) {
-    //             cpuGameBoardArray[randomIndex + i] = objIndex + 1
-    //         }
-    //     }
+    shipCounter++;
  })
     console.log(cpuGameBoardArray)
 
