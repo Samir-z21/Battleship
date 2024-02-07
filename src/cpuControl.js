@@ -99,11 +99,11 @@ function placeCpuShips () {
 }
 
 let originalValue = 100;
+let bothMissedCounter = 0;
 let ifMissed = false;
 
 const  generateCpuAttack = (gameBoardArray, shipObjs, currentTurn) => {
     let attackValue;
-
     let foundHit;
     let indexHit; 
    
@@ -116,17 +116,19 @@ const  generateCpuAttack = (gameBoardArray, shipObjs, currentTurn) => {
         indexHit= storedAttacks.indexOf(foundHit);
     }
 
-    if (foundHit) {
+    if (foundHit && bothMissedCounter < 2) {
         if (storedAttacks[indexHit + 1] === 0 && indexHit + 1 <= 99) {
             attackValue = indexHit + 1;
         } else if (storedAttacks[indexHit - 1 ] === 0 && indexHit - 1 >= 0) {
             attackValue = indexHit - 1;
-        } else if (storedAttacks[indexHit + 10 ] === 0 && indexHit + 10 <= 99) {
+        }
+        
+    } else if (foundHit && bothMissedCounter >= 2) {
+        if (storedAttacks[indexHit + 10 ] === 0 && indexHit + 10 <= 99) {
             attackValue = indexHit + 10;
         } else if (storedAttacks[indexHit - 10 ] === 0 && indexHit - 10 >= 0) {
             attackValue = indexHit - 10;
         }
-        
     } else {
         let attackingArray = storedAttacks.map((spot, index) => (spot === 0 ? index : undefined))
         .filter(index => index !== undefined);        
@@ -154,7 +156,8 @@ const cpuHits = coordinateVal => {
 const cpuMiss = coordinateVal => {
     storedAttacks[coordinateVal] = 'miss';
     if (!(originalValue === 100)) {
-        ifMissed = true
+        ifMissed = true;
+        bothMissedCounter++
     }
     console.log(storedAttacks);
 
@@ -163,7 +166,8 @@ const cpuMiss = coordinateVal => {
 
 const cpuSunk = coordinateVal => {
     storedAttacks[coordinateVal] = 'sunked'; 
-    originalValue = 100
+    originalValue = 100;
+    bothMissedCounter = 0;
 } 
 
 
