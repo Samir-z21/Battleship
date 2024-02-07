@@ -1,16 +1,16 @@
 import './home.css';
 
 import {placeCpuShips,
-    generateCpuAttack, 
-    cpuGameBoardArray,
-    cpuShipObjs, 
+    // generateCpuAttack, 
+    // cpuGameBoardArray,
+    // cpuShipObjs, 
     cpuHits, 
     cpuMiss,
     cpuSunk
 } from './cpuControl';
 
 //Global value
-let axis = "x";
+let axis = "y";
 const playerShipObjs = [];
 
 // Console log purposes
@@ -41,6 +41,7 @@ const gameBoard = (() => {
 
     const placeShip = value => {
         let playerShipArray = [];
+        if (shipCounter > 5) return "all ships placed"
         switch (shipCounter) {
             case 1:
                 if (!validPlacement(5, value, playerShipArray, shipCounter)) {
@@ -108,7 +109,7 @@ const gameBoard = (() => {
             }
         }
         
-        
+        return playerShipArray
     }
     
     const receiveAttack = (coordinateVal, gameBoardArray, shipObjs, currentTurn) => {
@@ -200,60 +201,31 @@ function validPlacement (lengthShip, value, playerShipArray) {
     return true
 }
 
-gameBoard.placeShip(13)
-gameBoard.placeShip(42)
-gameBoard.placeShip(66)
-gameBoard.placeShip(55)
-gameBoard.placeShip(88)
+// gameBoard.placeShip(13)
+// gameBoard.placeShip(42)
+// gameBoard.placeShip(66)
+// gameBoard.placeShip(55)
+// gameBoard.placeShip(88)
 
 
 
-gameBoard.receiveAttack(29, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
-gameBoard.receiveAttack(42, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
-gameBoard.receiveAttack(55, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
-gameBoard.receiveAttack(25, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
-gameBoard.receiveAttack(40, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
+// gameBoard.receiveAttack(29, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
+// gameBoard.receiveAttack(42, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
+// gameBoard.receiveAttack(55, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
+// gameBoard.receiveAttack(25, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
+// gameBoard.receiveAttack(40, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
 
 
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+// generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+// generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+// generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+// generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+// generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
 
 
 
-console.log(playerGameBoardArray)
+
+// console.log(playerGameBoardArray)
 // console.log(cpuGameBoardArray)
 
 

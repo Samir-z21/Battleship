@@ -96,7 +96,11 @@ function placeCpuShips () {
         }
     shipCounter++;
  })
+ return cpuGameBoardArray
 }
+
+
+
 
 let originalValue = 100;
 let bothMissedCounter = 0;
@@ -110,7 +114,6 @@ const  generateCpuAttack = (gameBoardArray, shipObjs, currentTurn) => {
     if (ifMissed) {
         foundHit = true;
         indexHit = originalValue; 
-        console.log("hey")
     } else {
         foundHit = storedAttacks.find((shipBox) => shipBox === "hit");
         indexHit= storedAttacks.indexOf(foundHit);
@@ -148,9 +151,6 @@ const cpuHits = coordinateVal => {
         storedAttacks[coordinateVal] = 'hit';
         originalValue = coordinateVal;
     }
-
-    console.log(storedAttacks);
-
 }
 
 const cpuMiss = coordinateVal => {
@@ -159,9 +159,6 @@ const cpuMiss = coordinateVal => {
         ifMissed = true;
         bothMissedCounter++
     }
-    console.log(storedAttacks);
-
-
 }
 
 const cpuSunk = coordinateVal => {
@@ -169,7 +166,6 @@ const cpuSunk = coordinateVal => {
     originalValue = 100;
     bothMissedCounter = 0;
 } 
-
 
 
 
