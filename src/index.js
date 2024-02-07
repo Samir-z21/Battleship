@@ -1,8 +1,16 @@
 import './home.css';
-import placeCpuShips from './cpuControl';
+
+import {placeCpuShips,
+    generateCpuAttack, 
+    cpuGameBoardArray,
+    cpuShipObjs, 
+    cpuHits, 
+    cpuMiss,
+    cpuSunk
+} from './cpuControl';
 
 //Global value
-let axis = "y";
+let axis = "x";
 const playerShipObjs = [];
 
 // Console log purposes
@@ -16,12 +24,14 @@ class Ship {
     }
 
     hit() {
-        this.hits++
+        this.hits++;
     }
 
     isSunk () {
-        if (this.hits >= this.length) 
-        this.sunk = true;
+        if (this.hits === this.length) {
+            this.sunk = true;
+            return true
+        } else return false
     }
 }
 
@@ -80,6 +90,7 @@ const gameBoard = (() => {
 
             break;
         }
+
         
         // extra error handling
         if (playerShipArray === []) return errorInvalidPosition
@@ -91,66 +102,63 @@ const gameBoard = (() => {
                 } else playerGameBoardArray[element] = shipCounter; 
             }
             shipCounter++
+
+            if (shipCounter > 5) {
+                placeCpuShips()
+            }
         }
         
-        // test purposes
-        return playerShipArray
+        
     }
     
-    const receiveAttack = coordinateVal => {
-        if (!(playerGameBoardArray[coordinateVal] === 0 || 
-            playerGameBoardArray[coordinateVal] === 1 || 
-            playerGameBoardArray[coordinateVal] === 2 || 
-            playerGameBoardArray[coordinateVal] === 3 || 
-            playerGameBoardArray[coordinateVal] === 4 || 
-            playerGameBoardArray[coordinateVal] === 5
-        )) {
+    const receiveAttack = (coordinateVal, gameBoardArray, shipObjs, currentTurn) => {
+
+        if (!(gameBoardArray[coordinateVal] === 0 || 
+            gameBoardArray[coordinateVal] === 1 || 
+            gameBoardArray[coordinateVal] === 2 || 
+            gameBoardArray[coordinateVal] === 3 || 
+            gameBoardArray[coordinateVal] === 4 || 
+            gameBoardArray[coordinateVal] === 5)
+        ){
             return `${coordinateVal} already recevied attack`
         } else {
-            switch (playerGameBoardArray[coordinateVal]) {
-                case 0 :
-                    playerGameBoardArray[coordinateVal] = "miss";
-                break
-    
-                case 1: 
-                    playerShipObjs[0].hit();
-                    playerShipObjs[0].isSunk();
-                    playerGameBoardArray[coordinateVal] = '1 hit';
-                break
-    
-                case 2: 
-                    playerShipObjs[1].hit();
-                    playerShipObjs[1].isSunk();
-                    playerGameBoardArray[coordinateVal] = '2 hit';
-                break 
-    
-                case 3: 
-                    playerShipObjs[2].hit();
-                    playerShipObjs[2].isSunk();
-                    playerGameBoardArray[coordinateVal] = '3 hit';
-                break
-    
-                case 4: 
-                    playerShipObjs[3].hit();
-                    playerShipObjs[3].isSunk();
-                    playerGameBoardArray[coordinateVal] = '4 hit';
-                break
-    
-                case 5: 
-                    playerShipObjs[4].hit();
-                    playerShipObjs[4].isSunk();
-                    playerGameBoardArray[coordinateVal] = '5 hit';
-                break
+            let sunked = false;
+            if (gameBoardArray[coordinateVal] === 0) gameBoardArray[coordinateVal] = "miss";
+            else {
+                shipObjs[gameBoardArray[coordinateVal] - 1].hit();
+
+                if (shipObjs[gameBoardArray[coordinateVal] - 1].isSunk()) {
+                    sunked = true;
+                };
+                gameBoardArray[coordinateVal] = `${gameBoardArray[coordinateVal]} hit`;
+
+                
+            }
+
+            if (gameBoardArray[coordinateVal] === 'miss' && currentTurn === 'cpuTurn'){
+                cpuMiss(coordinateVal);
+            } else if (gameBoardArray[coordinateVal].includes('hit')  && currentTurn === 'cpuTurn') {
+                cpuHits(coordinateVal);
             } 
 
-            endGameCheck()
+            if (sunked) {
+                cpuSunk(coordinateVal)
+            }
+            
+            if (endGameCheck(shipObjs)) {
+                // stop player interaction code {
+
+
+                //}
+                return `Winner is ${currentTurn}`;
+            }
         }
     }
 
 
-    const endGameCheck = () => {
-        if (!(playerShipObjs.find(element => element.sunk === false))) return "All ships have sunk"; 
-        else return "Not all ships have sunk"
+    const endGameCheck = shipObjs => {
+        if (!(shipObjs.find(element => element.sunk === false))) return true; 
+        else return false;
     }
 
 
@@ -192,27 +200,50 @@ function validPlacement (lengthShip, value, playerShipArray) {
     return true
 }
 
-// console.log(gameBoard.placeShip(13))
-// console.log(gameBoard.placeShip(88))
-// console.log(gameBoard.placeShip(95))
-// console.log(gameBoard.placeShip(0))
-// console.log(gameBoard.placeShip(84))
+gameBoard.placeShip(13)
+gameBoard.placeShip(42)
+gameBoard.placeShip(66)
+gameBoard.placeShip(55)
+gameBoard.placeShip(88)
 
 
-// gameBoard.receiveAttack(29)
-// gameBoard.receiveAttack(14)
-// gameBoard.receiveAttack(74)
-// gameBoard.receiveAttack(21)
-// gameBoard.receiveAttack(85)
-// gameBoard.receiveAttack(84)
+
+gameBoard.receiveAttack(29, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
+gameBoard.receiveAttack(42, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
+gameBoard.receiveAttack(55, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
+gameBoard.receiveAttack(25, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
+gameBoard.receiveAttack(40, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
 
 
-// console.log(playerGameBoardArray)
-// console.log(playerShipObjs)
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
+
+
+
+console.log(playerGameBoardArray)
+// console.log(cpuGameBoardArray)
+
+
 // console.log(gameBoard.receiveAttack(29))
 // console.log(gameBoard.endGameCheck())
 
-placeCpuShips()
+
 
 export {Ship, gameBoard, playerGameBoardArray, playerShipObjs}
 

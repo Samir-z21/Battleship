@@ -1,11 +1,15 @@
-import {Ship, gameBoard, playerGameBoardArray, playerShipObjs} from './index';
+import {Ship, gameBoard} from './index';
 
 const cpuGameBoardArray = new Array(100).fill(0);
 const cpuShipObjs = [];
 
+const storedAttacks = Array.from({ length: 100}, () => 0);
 
 
-const placeCpuShips = () => {
+
+
+function placeCpuShips () {
+
     const carrier = new Ship(5, 0, false);
     cpuShipObjs.push(carrier);
     
@@ -27,7 +31,6 @@ const placeCpuShips = () => {
         let modifiedArray = [];
         let continueLoop = true;
         const axis = Math.round(Math.random()); // 0 = x, 1 = y
-        console.log(axis)
         cpuGameBoardArray.forEach((boardElement, boardIndex) => {
             if (boardElement === 0) modifiedArray.push(boardIndex);
         });
@@ -44,8 +47,6 @@ const placeCpuShips = () => {
                 if (randomIndex + ship.length - 1 > firstDigit * 10 + 9) {
                     randomIndex = (firstDigit * 10 + 9) - ship.length + 1 
                 }
-
-                console.log(randomIndex)
 
                 for (let i = 0; i < ship.length; i++) {
                     if (cpuGameBoardArray[randomIndex + i] !== 0) {
@@ -75,7 +76,6 @@ const placeCpuShips = () => {
                     randomIndex = (99 - randomIndex);    
                 }
 
-                console.log(randomIndex)
 
 
                 for (let i = 0; i < ship.length; i++) {
@@ -96,10 +96,85 @@ const placeCpuShips = () => {
         }
     shipCounter++;
  })
-    console.log(cpuGameBoardArray)
+}
 
-    console.log(cpuShipObjs)
+let originalValue = 100;
+let ifMissed = false;
+
+const  generateCpuAttack = (gameBoardArray, shipObjs, currentTurn) => {
+    let attackValue;
+
+    let foundHit;
+    let indexHit; 
+   
+    if (ifMissed) {
+        foundHit = true;
+        indexHit = originalValue; 
+        console.log("hey")
+    } else {
+        foundHit = storedAttacks.find((shipBox) => shipBox === "hit");
+        indexHit= storedAttacks.indexOf(foundHit);
+    }
+
+    if (foundHit) {
+        if (storedAttacks[indexHit + 1] === 0 && indexHit + 1 <= 99) {
+            attackValue = indexHit + 1;
+        } else if (storedAttacks[indexHit - 1 ] === 0 && indexHit - 1 >= 0) {
+            attackValue = indexHit - 1;
+        } else if (storedAttacks[indexHit + 10 ] === 0 && indexHit + 10 <= 99) {
+            attackValue = indexHit + 10;
+        } else if (storedAttacks[indexHit - 10 ] === 0 && indexHit - 10 >= 0) {
+            attackValue = indexHit - 10;
+        }
+        
+    } else {
+        let attackingArray = storedAttacks.map((spot, index) => (spot === 0 ? index : undefined))
+        .filter(index => index !== undefined);        
+        attackValue = attackingArray[Math.floor(Math.random()*attackingArray.length)];
+    }
+    
+    gameBoard.receiveAttack(attackValue,gameBoardArray, shipObjs, currentTurn);
 }
 
 
-export default placeCpuShips
+const cpuHits = coordinateVal => {
+    if (storedAttacks.indexOf('hit') !== -1) {
+        storedAttacks[storedAttacks.indexOf('hit')] = 'hitten';
+        storedAttacks[coordinateVal] = 'hit';
+        ifMissed = false
+    } else {
+        storedAttacks[coordinateVal] = 'hit';
+        originalValue = coordinateVal;
+    }
+
+    console.log(storedAttacks);
+
+}
+
+const cpuMiss = coordinateVal => {
+    storedAttacks[coordinateVal] = 'miss';
+    if (!(originalValue === 100)) {
+        ifMissed = true
+    }
+    console.log(storedAttacks);
+
+
+}
+
+const cpuSunk = coordinateVal => {
+    storedAttacks[coordinateVal] = 'sunked'; 
+    originalValue = 100
+} 
+
+
+
+
+export {
+    placeCpuShips,
+    generateCpuAttack,
+    cpuHits, 
+    cpuMiss,
+    cpuSunk,
+    cpuGameBoardArray,
+    cpuShipObjs
+}
