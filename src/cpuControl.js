@@ -96,6 +96,7 @@ function placeCpuShips () {
         }
     shipCounter++;
  })
+ console.log(cpuGameBoardArray)
  return cpuGameBoardArray
 }
 

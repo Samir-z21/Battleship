@@ -1,3 +1,80 @@
 * {
-    background-color: aqua;
+    padding: 0px;
+    margin: 0px;
+}
+
+body { 
+    height: 100vh;
+    background-color: #010034;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    gap: 50px;
+}
+
+#title {
+    display: flex;
+    align-items: flex-start;
+    font-size: 40px;
+    color: #4e4e50;
+    border: 1px solid red;
+}
+
+#mainContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+
+.messageBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    width: 75%;
+    height: 65px;
+    border: 1px solid white;
+    border-radius: 15px;
+    background: linear-gradient(to right, #373737, #292929, #292929, #373737);
+}
+  
+
+
+.boardsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+}
+
+.boardSection {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+}
+
+.boardName {
+    font-size: larger;
+    font-weight: 1000;
+} 
+
+.boardsDisplay {
+    display: grid;
+    grid-template-columns: repeat(10, 45px);
+    grid-template-rows:repeat(10, 45px);
+    gap: 5px;
+}
+
+.boxDisplay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid white;
+    font-size: 2rem;
+    height: 45px;
+    width: 45px;
 }

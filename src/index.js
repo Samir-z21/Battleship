@@ -9,7 +9,7 @@ import displayBoards from './DOMplay';
 const playerShipObjs = [];
 
 // just for now
-const axis = Math.round(Math.random()); // 0 = x, 1 = y;
+let axis = Math.round(Math.random()); // 0 = x, 1 = y;
 
 // Console log purposes
 const playerGameBoardArray = new Array(100).fill(0);
@@ -39,6 +39,7 @@ const gameBoard = (() => {
 
     const placeShip = value => {
         let playerShipArray = [];
+        axis = Math.round(Math.random())
         if (shipCounter > 5) return "all ships placed"
         switch (shipCounter) {
             case 1:
@@ -212,7 +213,7 @@ gameBoard.placeShip(13)
 gameBoard.placeShip(55)
 gameBoard.placeShip(66)
 gameBoard.placeShip(0)
-gameBoard.placeShip(84)
+gameBoard.placeShip(82)
 
 displayBoards()
 
