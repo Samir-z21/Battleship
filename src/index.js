@@ -1,17 +1,15 @@
 import './home.css';
 
-import {placeCpuShips,
-    // generateCpuAttack, 
-    // cpuGameBoardArray,
-    // cpuShipObjs, 
-    cpuHits, 
-    cpuMiss,
-    cpuSunk
+import {placeCpuShips,cpuHits, cpuMiss,cpuSunk
 } from './cpuControl';
 
+import displayBoards from './DOMplay';
+
 //Global value
-let axis = "x";
 const playerShipObjs = [];
+
+// just for now
+const axis = Math.round(Math.random()); // 0 = x, 1 = y;
 
 // Console log purposes
 const playerGameBoardArray = new Array(100).fill(0);
@@ -184,7 +182,7 @@ const gameBoard = (() => {
 
 function validPlacement (lengthShip, value, playerShipArray) {
     
-    if (axis === 'x') {
+    if (!axis) {
         let findX = (Math.floor(value/10)*10) + 9; 
         for (let i = 0; i < lengthShip; i++) {
             if (playerGameBoardArray[value + i] !== 0 || 
@@ -197,7 +195,7 @@ function validPlacement (lengthShip, value, playerShipArray) {
             
             
         }
-    } else if (axis === 'y') {
+    } else {
         for (let i = 0; i < lengthShip; i++) {
             if (playerGameBoardArray[value + (i*10)] !== 0 || 
                 value + (i*10) > 99) return false
@@ -210,12 +208,13 @@ function validPlacement (lengthShip, value, playerShipArray) {
     return true
 }
 
-// gameBoard.placeShip(13)
-// gameBoard.placeShip(42)
-// gameBoard.placeShip(66)
-// gameBoard.placeShip(55)
-// gameBoard.placeShip(88)
+gameBoard.placeShip(13)
+gameBoard.placeShip(55)
+gameBoard.placeShip(66)
+gameBoard.placeShip(0)
+gameBoard.placeShip(84)
 
+displayBoards()
 
 
 // gameBoard.receiveAttack(29, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
@@ -234,8 +233,7 @@ function validPlacement (lengthShip, value, playerShipArray) {
 
 
 
-// console.log(playerGameBoardArray)
-// console.log(cpuGameBoardArray)
+console.log(playerGameBoardArray)
 
 
 // console.log(gameBoard.receiveAttack(29))

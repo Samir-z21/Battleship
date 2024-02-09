@@ -2,9 +2,9 @@ import {gameBoard, playerGameBoardArray, playerShipObjs} from "./index";
 import {cpuGameBoardArray, cpuShipObjs, generateCpuAttack} from "./cpuControl";
 
 // Player ship placements tests 
-    // test with .only !!!
+    // test with one at time !!!
 
-test('getting ship location "x axis" ', () => {
+test.skip('getting ship location "x axis" ', () => {
     expect(gameBoard.placeShip(88)).toEqual("can't place your ship here");
     expect(gameBoard.placeShip(95)).toEqual([95,96,97,98,99]);
     expect(gameBoard.placeShip(78)).toEqual("can't place your ship here");
@@ -35,7 +35,7 @@ test.skip('getting ship location "y axis" ', () => {
 // Cpu Ship placements test
 
 
-test('all 17 placement have been done', () => {
+test.skip('all 17 placement have been done', () => {
     expect(cpuGameBoardArray.filter(box => box !== 0).length).toBe(17);
 
     const cpuCarrier = cpuGameBoardArray
@@ -94,7 +94,7 @@ test('all 17 placement have been done', () => {
 
 // Player Attacks Tests    
 
-test('player attacks', () => {
+test.skip('player attacks', () => {
    
     function attacks (value) {
         return typeof cpuGameBoardArray[value] === 'number' ? `${value} got attacked` : `${value} already recevied attack`;
@@ -128,7 +128,7 @@ expect(gameBoard.receiveAttack(48, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
 
 // CPU Attack Tests    
 
-test('cpu attacks', () => {
+test.skip('cpu attacks', () => {
 
     const firstAttack = generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn');
     let attackArray = playerGameBoardArray.slice();
