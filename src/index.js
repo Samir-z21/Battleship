@@ -10,7 +10,7 @@ import {placeCpuShips,
 } from './cpuControl';
 
 //Global value
-let axis = "y";
+let axis = "x";
 const playerShipObjs = [];
 
 // Console log purposes
@@ -123,15 +123,21 @@ const gameBoard = (() => {
         ){
             return `${coordinateVal} already recevied attack`
         } else {
-            let sunked = false;
+            let cpuSunked = false;
+            let playerSunked = false;
             if (gameBoardArray[coordinateVal] === 0) gameBoardArray[coordinateVal] = "miss";
             else {
                 shipObjs[gameBoardArray[coordinateVal] - 1].hit();
 
-                if (shipObjs[gameBoardArray[coordinateVal] - 1].isSunk()) {
-                    sunked = true;
+                if (shipObjs[gameBoardArray[coordinateVal] - 1].isSunk() && currentTurn === 'cpuTurn') {
+                    cpuSunked = true;
+                };
+
+                if (shipObjs[gameBoardArray[coordinateVal] - 1].isSunk() && currentTurn === 'playerTurn') {
+                    playerSunked = true;
                 };
                 gameBoardArray[coordinateVal] = `${gameBoardArray[coordinateVal]} hit`;
+
 
                 
             }
@@ -142,7 +148,7 @@ const gameBoard = (() => {
                 cpuHits(coordinateVal);
             } 
 
-            if (sunked) {
+            if (cpuSunked) {
                 cpuSunk(coordinateVal)
             }
             
@@ -153,7 +159,10 @@ const gameBoard = (() => {
                 //}
                 return `Winner is ${currentTurn}`;
             }
+
+           
         }
+        return `${coordinateVal} got attacked`
     }
 
 

@@ -139,6 +139,7 @@ const  generateCpuAttack = (gameBoardArray, shipObjs, currentTurn) => {
     }
     
     gameBoard.receiveAttack(attackValue,gameBoardArray, shipObjs, currentTurn);
+    return attackValue
 }
 
 
