@@ -7,7 +7,7 @@ import displayBoards from './DOMplay';
 
 //Global value
 const playerShipObjs = [];
-
+const shipHeads = [];
 // just for now
 let axis = Math.round(Math.random()); // 0 = x, 1 = y;
 
@@ -101,13 +101,14 @@ const gameBoard = (() => {
                     break
                 } else playerGameBoardArray[element] = shipCounter; 
             }
-            shipCounter++
+            shipCounter++;
+            shipHeads.push(value);
 
             if (shipCounter > 5) {
-                placeCpuShips()
+                placeCpuShips();
             }
         }
-        
+
         return playerShipArray
     }
     
@@ -242,5 +243,5 @@ console.log(playerGameBoardArray)
 
 
 
-export {Ship, gameBoard, playerGameBoardArray, playerShipObjs}
+export {Ship, gameBoard, playerGameBoardArray, playerShipObjs, shipHeads}
 

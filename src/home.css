@@ -78,3 +78,12 @@ body {
     height: 45px;
     width: 45px;
 }
+
+.yAxis {
+    transform: rotate(90deg);
+}
+
+.carrierShipDiv {
+    height: 0px;
+    width: 0px;
+}
