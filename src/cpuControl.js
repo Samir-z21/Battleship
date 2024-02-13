@@ -96,7 +96,7 @@ function placeCpuShips () {
         }
     shipCounter++;
  })
- console.log(cpuGameBoardArray)
+//  console.log(cpuGameBoardArray)
  return cpuGameBoardArray
 }
 
@@ -140,6 +140,8 @@ const  generateCpuAttack = (gameBoardArray, shipObjs, currentTurn) => {
     }
     
     gameBoard.receiveAttack(attackValue,gameBoardArray, shipObjs, currentTurn);
+    console.log(storedAttacks)
+    console.log(attackValue)
     return attackValue
 }
 

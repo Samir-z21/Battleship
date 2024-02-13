@@ -106,6 +106,7 @@ const gameBoard = (() => {
 
             if (shipCounter > 5) {
                 placeCpuShips();
+                displayBoards();
             }
         }
 
@@ -121,7 +122,7 @@ const gameBoard = (() => {
             gameBoardArray[coordinateVal] === 4 || 
             gameBoardArray[coordinateVal] === 5)
         ){
-            return `${coordinateVal} already recevied attack`
+            return false
         } else {
             let cpuSunked = false;
             let playerSunked = false;
@@ -137,9 +138,6 @@ const gameBoard = (() => {
                     playerSunked = true;
                 };
                 gameBoardArray[coordinateVal] = `${gameBoardArray[coordinateVal]} hit`;
-
-
-                
             }
 
             if (gameBoardArray[coordinateVal] === 'miss' && currentTurn === 'cpuTurn'){
@@ -210,13 +208,12 @@ function validPlacement (lengthShip, value, playerShipArray) {
     return true
 }
 
-gameBoard.placeShip(13)
-gameBoard.placeShip(55)
-gameBoard.placeShip(66)
+gameBoard.placeShip(23)
+gameBoard.placeShip(11)
+gameBoard.placeShip(34)
 gameBoard.placeShip(0)
 gameBoard.placeShip(82)
 
-displayBoards()
 
 
 // gameBoard.receiveAttack(29, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
@@ -235,7 +232,7 @@ displayBoards()
 
 
 
-console.log(playerGameBoardArray)
+// console.log(playerGameBoardArray)
 
 
 // console.log(gameBoard.receiveAttack(29))

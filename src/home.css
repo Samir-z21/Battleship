@@ -3,6 +3,8 @@
     margin: 0px;
 }
 
+
+
 body { 
     height: 100vh;
     background-color: #010034;
@@ -79,11 +81,91 @@ body {
     width: 45px;
 }
 
-.yAxis {
+.boxDisplay img {
+    opacity: 0.7;
+}
+
+.boxDisplay.attacked::before {
+    content: "";
+    width: 10px; 
+    height: 10px;
+    background-color: red;
+    border-radius: 50%; 
+}
+
+
+.carrier {
+    position: relative;
+    left: 100px;
+    min-width: 225px;
+    max-width: 225px;
+    height: 35px;
+}
+
+.carrier.yAxis {
+    position: relative;
+    top: 100px;
+    left: 0px;
     transform: rotate(90deg);
 }
 
-.carrierShipDiv {
-    height: 0px;
-    width: 0px;
+.battleship {
+    position: relative;
+    left: 75px;
+    min-width: 180px;
+    max-width: 180px;
+    height: 30px;
+}
+
+.battleship.yAxis {
+    position: relative;
+    top: 75px;
+    left: 0px;
+    transform: rotate(90deg);
+}
+
+.destroyer {
+    position: relative;
+    left: 50px;
+    min-width: 135px;
+    max-width: 135px;
+    height: 30px;
+}
+
+.destroyer.yAxis {
+    position: relative;
+    top: 50px;
+    left: 0px;
+    transform: rotate(90deg);
+}
+
+.submarine {
+    position: relative;
+    left: 35px;
+    min-width: 160px;
+    max-width: 160px;
+    height: 60px;
+}
+
+.submarine.yAxis {
+    position: relative;
+    top: 35px;
+    left: 0px;
+    transform: rotate(90deg);
+}
+
+
+.patrolBoat {
+    position: relative;
+    left: 10px;
+    min-width: 150px;
+    max-width: 150px;
+    height: 50px;
+}
+
+.patrolBoat.yAxis {
+    position: relative;
+    top: 10px;
+    left: 0px;
+    transform: rotate(90deg);
 }

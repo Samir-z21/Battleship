@@ -27,14 +27,13 @@ function displayBoards () {
 
     const playerBoxDivs = []
 
-    playerGameBoardArray.forEach((box,index) => {
-        const playerBox = createDiv('boxDisplay', box, index);
+    playerGameBoardArray.forEach(index => {
+        const playerBox = createDiv('boxDisplay', undefined, index);
         playerBoxDivs.push(playerBox);
         playerDisplayBoard.appendChild(playerBox);
     });
 
     shipHeads.forEach(spot => {
-        playerBoxDivs[spot].style.border = '1px solid red';
         switch (playerGameBoardArray[spot]) {
             case 1: 
             const carrierPic = createImg("carrier");
@@ -78,6 +77,18 @@ function displayBoards () {
 
     cpuGameBoardArray.forEach((box,index) => {
         const cpuBox = createDiv('boxDisplay', box, index)
+        cpuBox.addEventListener('click', () => {
+            if (gameBoard.receiveAttack(index,cpuGameBoardArray,cpuShipObjs, 'playerTurn')){
+                setTimeout(function () {
+                    cpuBox.classList.add('attacked')
+                }, 1000)
+                 
+                setTimeout(function(){
+                    playerBoxDivs[generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')].classList.add('attacked');
+                }, 3000);
+            }
+            
+        });
         cpuDisplayBoard.appendChild(cpuBox);
     });
 
