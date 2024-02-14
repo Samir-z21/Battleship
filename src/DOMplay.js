@@ -8,10 +8,13 @@
 
 import {gameBoard, playerGameBoardArray, playerShipObjs, shipHeads} from './index';
 import {generateCpuAttack, cpuGameBoardArray, cpuShipObjs} from './cpuControl';
+import handleAttacks from './handleAttacks'
 
 const mainContainer = document.querySelector('#mainContainer');
 
 const playerName = 'Samir'
+const playerBoxDivs = [];
+
 
 function displayBoards () {
 
@@ -25,7 +28,6 @@ function displayBoards () {
     playerSection.appendChild(playerBoardName);
     playerSection.appendChild(playerDisplayBoard);
 
-    const playerBoxDivs = []
 
     playerGameBoardArray.forEach(index => {
         const playerBox = createDiv('boxDisplay', undefined, index);
@@ -78,16 +80,7 @@ function displayBoards () {
     cpuGameBoardArray.forEach((box,index) => {
         const cpuBox = createDiv('boxDisplay', box, index)
         cpuBox.addEventListener('click', () => {
-            if (gameBoard.receiveAttack(index,cpuGameBoardArray,cpuShipObjs, 'playerTurn')){
-                setTimeout(function () {
-                    cpuBox.classList.add('attacked')
-                }, 1000)
-                 
-                setTimeout(function(){
-                    playerBoxDivs[generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')].classList.add('attacked');
-                }, 3000);
-            }
-            
+            handleAttacks(cpuBox, index);
         });
         cpuDisplayBoard.appendChild(cpuBox);
     });
@@ -121,4 +114,4 @@ function createImg (className) {
 
 
 
-export default displayBoards
+export {displayBoards, playerBoxDivs}

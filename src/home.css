@@ -79,18 +79,27 @@ body {
     font-size: 2rem;
     height: 45px;
     width: 45px;
+
 }
 
 .boxDisplay img {
     opacity: 0.7;
+    border: 1px solid red;
 }
 
-.boxDisplay.attacked::before {
+.boxDisplay.hit::after, 
+.boxDisplay.missedAttack::after{
+    position: absolute;
     content: "";
-    width: 10px; 
-    height: 10px;
+    width: 15px; 
+    height: 15px;
     background-color: red;
     border-radius: 50%; 
+    z-index:2; 
+}
+
+.boxDisplay.missedAttack::after{
+    background-color: white;
 }
 
 

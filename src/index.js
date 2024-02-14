@@ -3,16 +3,16 @@ import './home.css';
 import {placeCpuShips,cpuHits, cpuMiss,cpuSunk
 } from './cpuControl';
 
-import displayBoards from './DOMplay';
+import {displayBoards} from './DOMplay';
 
 //Global value
 const playerShipObjs = [];
 const shipHeads = [];
+const playerGameBoardArray = new Array(100).fill(0);
+
 // just for now
 let axis = Math.round(Math.random()); // 0 = x, 1 = y;
 
-// Console log purposes
-const playerGameBoardArray = new Array(100).fill(0);
 
 class Ship {
     constructor (length, hits, sunk) {
@@ -149,24 +149,15 @@ const gameBoard = (() => {
             if (cpuSunked) {
                 cpuSunk(coordinateVal)
             }
-            
-            if (endGameCheck(shipObjs)) {
-                // stop player interaction code {
-
-
-                //}
-                return `Winner is ${currentTurn}`;
-            }
-
-           
+        
+           return true
         }
-        return `${coordinateVal} got attacked`
     }
 
 
     const endGameCheck = shipObjs => {
-        if (!(shipObjs.find(element => element.sunk === false))) return true; 
-        else return false;
+        if (!(shipObjs.find(element => element.sunk === false))) return true
+        else return false
     }
 
 

@@ -117,7 +117,7 @@ const  generateCpuAttack = (gameBoardArray, shipObjs, currentTurn) => {
         indexHit = originalValue; 
     } else {
         foundHit = storedAttacks.find((shipBox) => shipBox === "hit");
-        indexHit= storedAttacks.indexOf(foundHit);
+        indexHit = storedAttacks.indexOf(foundHit);
     }
 
     if (foundHit && bothMissedCounter < 2) {
@@ -125,6 +125,10 @@ const  generateCpuAttack = (gameBoardArray, shipObjs, currentTurn) => {
             attackValue = indexHit + 1;
         } else if (storedAttacks[indexHit - 1 ] === 0 && indexHit - 1 >= 0) {
             attackValue = indexHit - 1;
+        } else {
+            let attackingArray = storedAttacks.map((spot, index) => (spot === 0 ? index : undefined))
+        .filter(index => index !== undefined);        
+        attackValue = attackingArray[Math.floor(Math.random()*attackingArray.length)];
         }
         
     } else if (foundHit && bothMissedCounter >= 2) {
@@ -133,15 +137,20 @@ const  generateCpuAttack = (gameBoardArray, shipObjs, currentTurn) => {
         } else if (storedAttacks[indexHit - 10 ] === 0 && indexHit - 10 >= 0) {
             attackValue = indexHit - 10;
         }
+        else {
+            let attackingArray = storedAttacks.map((spot, index) => (spot === 0 ? index : undefined))
+        .filter(index => index !== undefined);        
+        attackValue = attackingArray[Math.floor(Math.random()*attackingArray.length)];
+        }
     } else {
         let attackingArray = storedAttacks.map((spot, index) => (spot === 0 ? index : undefined))
         .filter(index => index !== undefined);        
         attackValue = attackingArray[Math.floor(Math.random()*attackingArray.length)];
     }
     
+    console.log(attackValue)
     gameBoard.receiveAttack(attackValue,gameBoardArray, shipObjs, currentTurn);
     console.log(storedAttacks)
-    console.log(attackValue)
     return attackValue
 }
 
