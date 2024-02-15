@@ -5,7 +5,7 @@ const cpuShipObjs = [];
 
 const storedAttacks = Array.from({ length: 100}, () => 0);
 
-
+const cpuHeads = []
 
 
 function placeCpuShips () {
@@ -34,7 +34,8 @@ function placeCpuShips () {
         cpuGameBoardArray.forEach((boardElement, boardIndex) => {
             if (boardElement === 0) modifiedArray.push(boardIndex);
         });
-        
+        let randomIndex = 0;
+
         if (!axis) {
             while (continueLoop) {
                 let validPlacement = true;
@@ -42,7 +43,7 @@ function placeCpuShips () {
                 const firstDigit = Math.floor(Math.random() * 9);
                 const secondDigit = Math.floor(Math.random() * 9);
 
-                let randomIndex = Number(firstDigit.toString() + secondDigit.toString());
+                randomIndex = Number(firstDigit.toString() + secondDigit.toString());
 
                 if (randomIndex + ship.length - 1 > firstDigit * 10 + 9) {
                     randomIndex = (firstDigit * 10 + 9) - ship.length + 1 
@@ -70,7 +71,7 @@ function placeCpuShips () {
                 const firstDigit = Math.floor(Math.random() * 9);
                 const secondDigit = Math.floor(Math.random() * 9);
 
-                let randomIndex = Number(firstDigit.toString() + secondDigit.toString());
+                randomIndex = Number(firstDigit.toString() + secondDigit.toString());
 
                 if (randomIndex + ((ship.length -1) * 10) > 99 ) {
                     randomIndex = (99 - randomIndex);    
@@ -94,6 +95,7 @@ function placeCpuShips () {
                 } 
             }     
         }
+    cpuHeads.push(randomIndex)
     shipCounter++;
  })
 //  console.log(cpuGameBoardArray)
@@ -148,9 +150,7 @@ const  generateCpuAttack = (gameBoardArray, shipObjs, currentTurn) => {
         attackValue = attackingArray[Math.floor(Math.random()*attackingArray.length)];
     }
     
-    console.log(attackValue)
     gameBoard.receiveAttack(attackValue,gameBoardArray, shipObjs, currentTurn);
-    console.log(storedAttacks)
     return attackValue
 }
 
@@ -189,5 +189,6 @@ export {
     cpuMiss,
     cpuSunk,
     cpuGameBoardArray,
-    cpuShipObjs
+    cpuShipObjs,
+    cpuHeads
 }

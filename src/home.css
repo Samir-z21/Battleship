@@ -77,14 +77,27 @@ body {
     align-items: center;
     border: 1px solid white;
     font-size: 2rem;
-    height: 45px;
-    width: 45px;
+    max-height: 45px;
+    max-width: 45px;
+}
 
+.enemyBoxes:hover {
+    cursor: crosshair;
+    background-color: green;
 }
 
 .boxDisplay img {
     opacity: 0.7;
-    border: 1px solid red;
+    z-index: -2;
+}
+
+.hidden {
+    display: none;
+}
+
+.show {
+    display: block;
+    filter: brightness(50%);
 }
 
 .boxDisplay.hit::after, 
@@ -102,6 +115,11 @@ body {
     background-color: white;
 }
 
+.enemyBoxes.hit:hover,
+.enemyBoxes.boxDisplay.missedAttack:hover {
+    background-color: rgb(255, 45, 45);
+    cursor: not-allowed;
+}
 
 .carrier {
     position: relative;

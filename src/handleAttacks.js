@@ -1,6 +1,6 @@
 import {gameBoard, playerGameBoardArray, playerShipObjs} from './index';
 import {generateCpuAttack, cpuGameBoardArray, cpuShipObjs} from './cpuControl';
-import {playerBoxDivs} from './DOMplay';
+import {playerBoxDivs, cpuShipPics, playerShipPics, messageBox, awaiting} from './DOMplay';
 
 const mainContainer = document.querySelector('#mainContainer');
 
@@ -8,43 +8,157 @@ const declareWinner = document.createElement('div');
 declareWinner.classList.add('declareWinner');
 
 const playerName = 'Samir';
-
+let cpuFinished = false;
+let oneTime = 0;
+let message = ''
+let extra = ''
 
 
 function handleAttacks (cpuBox, index) {
+
+    setTimeout(function () {
+
+   
+    if (cpuFinished || oneTime !== 0) return
+    else cpuFinished = true
     if (gameBoard.receiveAttack(index,cpuGameBoardArray,cpuShipObjs, 'playerTurn')) {
+        let attackedIndex = index
+        messageBox.textContent = ''
+        message = 'You fire a shot into enemy waters ...... ';
+
+        for (let i = 0; i < message.length; i++) {
+            setTimeout(function() {
+                messageBox.textContent += (message.charAt(i));
+            }, 30 * i);
+        }
 
         setTimeout(function () {
-            if (cpuGameBoardArray[index] === 'miss') {
+            if (cpuGameBoardArray[attackedIndex] === 'miss') {
+                extra = ' and miss.'
                 cpuBox.classList.add('missedAttack');
             } else {
+                extra = " and it's a hit!"
                 cpuBox.classList.add('hit');
+                cpuShipObjs.forEach((obj, index)=> {
+                    if (obj.sunk && cpuGameBoardArray[attackedIndex].includes(index + 1)) {
+                        cpuShipPics[index].classList.remove('hidden');
+                        cpuShipPics[index].classList.add('show');
+                        switch(index) {
+                            case 0: extra = `You sunk their Carrier! `
+                            break;
+                            case 1: extra = `You sunk their BattleShip! `
+                            break;
+                            case 2: extra = `You sunk their Destroyer! `
+                            break;
+                            case 3: extra = `You sunk their Submarine! `
+                            break;
+                            case 4: extra = `You sunk their Patrol Boat! `
+                            break; 
+                        }
+                    }
+                })
             }
-        }, 1000)
+
+            for (let i = 0; i < extra.length; i++) {
+                setTimeout(function() {
+                    messageBox.textContent += (extra.charAt(i));
+                }, 30 * i);
+            }
+
+        }, 1500)
 
          if (gameBoard.endGameCheck(cpuShipObjs)) {
             // code to remove everything within it
-
+            while (mainContainer.firstChild) {
+                mainContainer.removeChild(mainContainer.firstChild);
+            }
+            mainContainer.appendChild(declareWinner);
             declareWinner.textContent = ` Winner is General ${playerName}`;
+
          } else {
+            setTimeout(function () {
+            messageBox.textContent = '';
+            message = 'Your opponent is aiming ...... ';
+            for (let i = 0; i < message.length; i++) {
+                setTimeout(function() {
+                    messageBox.textContent += (message.charAt(i));
+                }, 30 * i);
+            }
+            }, 3000)
+
+            setTimeout(function () {
+                message = 'The enemy fires a shot into your waters ...... '
+                messageBox.textContent = '';
+                for (let i = 0; i < message.length; i++) {
+                    setTimeout(function() {
+                        messageBox.textContent += (message.charAt(i));
+                    }, 30 * i);
+                }
+            }, 5000);
+
             setTimeout(function(){
+                
                 let cpuAttackValue = generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn');
                 
+                console.log(playerShipObjs)
+
+                
                 if (playerGameBoardArray[cpuAttackValue] === 'miss') {
+                    extra = ' and misses.'
                     playerBoxDivs[cpuAttackValue].classList.add('missedAttack')    
                 } else {
                     playerBoxDivs[cpuAttackValue].classList.add('hit');
-                }
-            }, 2000); 
+                    extra = "it's a hit!" 
+                    
 
-            if (gameBoard.endGameCheck(playerShipObjs)) {
-                declareWinner.textContent = ` Winner is CPU`;
-            }
+                    playerShipObjs.forEach((obj, index)=> {
+                        if (obj.sunk && playerGameBoardArray[cpuAttackValue].includes(index + 1)) {
+                            playerShipPics[index].classList.add('show');
+                            switch(index) {
+                                case 0: extra = `they sunk your Carrier! `
+                                break;
+                                case 1: extra = `they sunk your BattleShip! `
+                                break;
+                                case 2: extra = `they sunk your Destroyer! `
+                                break;
+                                case 3: extra = `they sunk your Submarine! `
+                                break;
+                                case 4: extra = `they sunk your Patrol Boat! `
+                                break; 
+                            }
+                        }
+
+                        
+                    })
+                }
+
+                
+
+                if (gameBoard.endGameCheck(playerShipObjs)) {
+                    while (mainContainer.firstChild) {
+                        mainContainer.removeChild(mainContainer.firstChild);
+                    }
+                    mainContainer.appendChild(declareWinner);
+                    declareWinner.textContent = ` Winner is CPU`;
+                }
+
+                for (let i = 0; i < extra.length; i++) {
+                    setTimeout(function() {
+                        messageBox.textContent += (extra.charAt(i));
+                    }, 30 * i);
+                }
+
+                setTimeout(function () {
+                    cpuFinished = false;
+                    oneTime = 0;
+                }, 900)
+            }, 7000); 
         }
         
     }
-
+    }, 500)   
 }
 
 
-export default handleAttacks
+
+export {handleAttacks}
