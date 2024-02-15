@@ -4,24 +4,30 @@ import {playerBoxDivs, cpuShipPics, playerShipPics, messageBox, awaiting} from '
 
 const mainContainer = document.querySelector('#mainContainer');
 
-const declareWinner = document.createElement('div');
-declareWinner.classList.add('declareWinner');
+const shotFiredMp3 = document.querySelector('#shotFired')
+const shotHitMp3 = document.querySelector('#shotHit')
+const shotMissedMp3 = document.querySelector('#shotMissed')
+
+ 
+
+
 
 const playerName = 'Samir';
 let cpuFinished = false;
 let oneTime = 0;
-let message = ''
-let extra = ''
+let message = '';
+let extra = '';
 
 
 function handleAttacks (cpuBox, index) {
 
-    setTimeout(function () {
+    const declareWinner = document.createElement('div');
+    declareWinner.classList.add('declareWinner');
 
-   
+    setTimeout(function () {
     if (cpuFinished || oneTime !== 0) return
-    else cpuFinished = true
     if (gameBoard.receiveAttack(index,cpuGameBoardArray,cpuShipObjs, 'playerTurn')) {
+        cpuFinished = true
         let attackedIndex = index
         messageBox.textContent = ''
         message = 'You fire a shot into enemy waters ...... ';
@@ -32,13 +38,18 @@ function handleAttacks (cpuBox, index) {
             }, 30 * i);
         }
 
+        shotFiredMp3.play();
+
+
         setTimeout(function () {
             if (cpuGameBoardArray[attackedIndex] === 'miss') {
                 extra = ' and miss.'
+                shotMissedMp3.play();
                 cpuBox.classList.add('missedAttack');
             } else {
                 extra = " and it's a hit!"
                 cpuBox.classList.add('hit');
+                shotHitMp3.play()
                 cpuShipObjs.forEach((obj, index)=> {
                     if (obj.sunk && cpuGameBoardArray[attackedIndex].includes(index + 1)) {
                         cpuShipPics[index].classList.remove('hidden');
@@ -67,14 +78,15 @@ function handleAttacks (cpuBox, index) {
 
         }, 1500)
 
-         if (gameBoard.endGameCheck(cpuShipObjs)) {
+         
+            if (gameBoard.endGameCheck(cpuShipObjs)) {
             // code to remove everything within it
-            while (mainContainer.firstChild) {
+            setTimeout(function () { while (mainContainer.firstChild) {
                 mainContainer.removeChild(mainContainer.firstChild);
             }
             mainContainer.appendChild(declareWinner);
-            declareWinner.textContent = ` Winner is General ${playerName}`;
-
+            declareWinner.textContent = ` Winner is General ${playerName} !!`;
+            }, 2200)
          } else {
             setTimeout(function () {
             messageBox.textContent = '';
@@ -87,6 +99,7 @@ function handleAttacks (cpuBox, index) {
             }, 3000)
 
             setTimeout(function () {
+                shotFiredMp3.play();
                 message = 'The enemy fires a shot into your waters ...... '
                 messageBox.textContent = '';
                 for (let i = 0; i < message.length; i++) {
@@ -104,9 +117,11 @@ function handleAttacks (cpuBox, index) {
 
                 
                 if (playerGameBoardArray[cpuAttackValue] === 'miss') {
+                    shotMissedMp3.play();
                     extra = ' and misses.'
                     playerBoxDivs[cpuAttackValue].classList.add('missedAttack')    
                 } else {
+                    shotHitMp3.play()
                     playerBoxDivs[cpuAttackValue].classList.add('hit');
                     extra = "it's a hit!" 
                     
@@ -134,13 +149,14 @@ function handleAttacks (cpuBox, index) {
 
                 
 
-                if (gameBoard.endGameCheck(playerShipObjs)) {
+                setTimeout(function() {if (gameBoard.endGameCheck(playerShipObjs)) {
                     while (mainContainer.firstChild) {
                         mainContainer.removeChild(mainContainer.firstChild);
                     }
                     mainContainer.appendChild(declareWinner);
                     declareWinner.textContent = ` Winner is CPU`;
                 }
+            }, 2000)
 
                 for (let i = 0; i < extra.length; i++) {
                     setTimeout(function() {
