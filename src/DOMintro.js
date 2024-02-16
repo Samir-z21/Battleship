@@ -11,6 +11,7 @@ let checking = false;
 let storedVal = [];
 
 const axisSelection = document.createElement('button');
+axisSelection.classList.add('axisSelection');
 const placeMessageDiv = document.createElement('div');
 
 function showPersonalBoard (playerName) {
@@ -20,6 +21,7 @@ function showPersonalBoard (playerName) {
     }
 
     placeMessageDiv.textContent = `${playerName}, place your ${currentShip.charAt(0).toUpperCase() + currentShip.slice(1)}:`
+    placeMessageDiv.classList.add('placeMessageDiv')
     mainContainer.appendChild(placeMessageDiv);
 
     axisSelection.textContent = "AXIS: X";
@@ -77,7 +79,7 @@ function showPersonalBoard (playerName) {
         })
 
         personalBox.addEventListener('click', () => {
-            placeShip(personalBox.value, playerName)
+            placeShip(personalBox.value, playerName, axisSelection)
         })
         personalBoxesDiv.push(personalBox);
         personalBoard.appendChild(personalBox);
@@ -112,8 +114,8 @@ function potentialPlacement (axisSelection, index) {
         break;
     }
 
+    let availableSpaces = true;
     if (axisSelection.textContent === "AXIS: X") {
-        let availableSpaces = true;
         let findX = (Math.floor(index/10)*10) + 9; 
 
 
@@ -139,66 +141,83 @@ function potentialPlacement (axisSelection, index) {
 
 
     } else {
+        for (let i = 0; i < loop; i++) {
+            if (index + i*10 > 99 || 
+                storedVal.find(val => val === index + i*10 )) {
+                availableSpaces = false;
+            }
+        }        
 
+        for (let i = 0; i < loop; i++) {
+            if (availableSpaces) {
+                personalBoxesDiv[index + i*10].classList.remove('rejection');
+                personalBoxesDiv[index + i*10].classList.add('selection');
+                checking = true
+            } else if (!availableSpaces) {
+                if (index + i*10 <= 99)
+                personalBoxesDiv[index + i*10].classList.add('rejection');
+            }
+        }
     }
 }
 
-function placeShip (value, playerName) {
+function placeShip (value, playerName, axisSelection) {
     let counter = 0;
     let loop = 0;
-    switch (currentShip) {
-            case 'carrier':
+    let chosenShip;
+    if (gameBoard.placeShip(value)) {
+        if (checking) {
+            switch (currentShip) {
+                case 'carrier':
                 counter = 1;
                 loop = 5;
+                const carrierPic = createImg("carrier");
+                chosenShip = carrierPic
+                personalBoxesDiv[value].appendChild(carrierPic);
+                currentShip = 'battleship';
             break;
             
             case 'battleship': 
                 counter = 2;
                 loop = 4;
+                const battleshipPic = createImg("battleship");
+                chosenShip = battleshipPic;
+                personalBoxesDiv[value].appendChild(battleshipPic);
+                currentShip = 'destroyer';
             break;
     
             case 'destroyer':
                 counter = 3;
                 loop = 3;
+                const destroyerPic = createImg("destroyer");
+                chosenShip = destroyerPic;
+                personalBoxesDiv[value].appendChild(destroyerPic);
+                currentShip = 'submarine';
             break;
     
             case 'submarine':
                 counter = 4;
                 loop = 3;
+                const submarinePic = createImg("submarine");
+                chosenShip = submarinePic;
+                personalBoxesDiv[value].appendChild(submarinePic);
+                currentShip = 'patrolBoat';
             break;
     
             case 'patrolBoat':
                 counter = 5;
                 loop = 2;
-            break;
-        }
-    if (gameBoard.placeShip(value)) {
-        if (checking) {
-            if (counter === 1) {
-                const carrierPic = createImg("carrier");
-                personalBoxesDiv[value].appendChild(carrierPic);
-                currentShip = 'battleship';
-
-            } else if (counter === 2) {
-                const battleshipPic = createImg("battleship");
-                personalBoxesDiv[value].appendChild(battleshipPic);
-                currentShip = 'destroyer';
-
-            } else if (counter === 3) {
-                const destroyerPic = createImg("destroyer");
-                personalBoxesDiv[value].appendChild(destroyerPic);
-                currentShip = 'submarine';
-
-            } else if (counter === 4) {
-                const submarinePic = createImg("submarine");
-                personalBoxesDiv[value].appendChild(submarinePic);
-                currentShip = 'patrolBoat';
-
-            } else if (counter === 5) {
                 const patrolBoatPic = createImg("patrolBoat");
+                chosenShip = patrolBoatPic;
                 personalBoxesDiv[value].appendChild(patrolBoatPic);
                 currentShip = '';
-            }
+            break;
+        }
+
+        
+        if (axisSelection.textContent === "AXIS: Y") {
+            chosenShip.classList.add('yAxis') 
+        }
 
             placeMessageDiv.textContent = `${playerName}, place your ${currentShip.charAt(0).toUpperCase() + currentShip.slice(1)}:`
 
@@ -207,8 +226,13 @@ function placeShip (value, playerName) {
             }
 
             for (let i = 0; i < loop; i++) {
-                storedVal.push(value + i);
-                personalBoxesDiv[value + i].classList.remove('selection')
+                if (axisSelection.textContent === "AXIS: X") {
+                    storedVal.push(value + i);
+                    personalBoxesDiv[value + i].classList.remove('selection')
+                } else {
+                    storedVal.push(value + i*10);
+                    personalBoxesDiv[value + i*10].classList.remove('selection')
+                }
             }
         } 
        

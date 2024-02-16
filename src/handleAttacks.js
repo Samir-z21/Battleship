@@ -121,9 +121,6 @@ function handleAttacks (cpuBox, index) {
                 
                 let cpuAttackValue = generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn');
                 
-                console.log(playerShipObjs)
-
-                
                 if (playerGameBoardArray[cpuAttackValue] === 'miss') {
                     shotMissedMp3.play();
                     extra = ' and misses.'

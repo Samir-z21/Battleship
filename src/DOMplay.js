@@ -156,7 +156,6 @@ function displayBoards () {
 
     mainContainer.appendChild(boardsContainer);
 
-    //
 };
 
 
