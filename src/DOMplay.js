@@ -23,7 +23,9 @@ const cpuShipPics = [];
 
 
 function displayBoards () {
-
+    while (mainContainer.firstChild) {
+        mainContainer.removeChild(mainContainer.firstChild)
+    }
     let message = `Awaiting orders, Admiral ${playerName}`;
     
     for (let i = 0; i < message.length; i++) {

@@ -1,17 +1,25 @@
 import './home.css';
 
-import {placeCpuShips,cpuHits, cpuMiss,cpuSunk
-} from './cpuControl';
-
+import {placeCpuShips,cpuHits, cpuMiss,cpuSunk} from './cpuControl';
 import {displayBoards} from './DOMplay';
+import {showPersonalBoard, axisSelection} from './DOMintro';
+
+
+
+const submitBtn = document.querySelector('#submitBtn');
+const playerInput = document.querySelector('#playerName');
+
+submitBtn.addEventListener('click', event => {
+    event.preventDefault();
+    let playerName = playerInput.value;
+     showPersonalBoard(playerName)
+})
 
 //Global value
 const playerShipObjs = [];
 const playerHeads = [];
 const playerGameBoardArray = new Array(100).fill(0);
 let gameEnd = false
-// just for now
-let axis = Math.round(Math.random()); // 0 = x, 1 = y;
 
 
 class Ship {
@@ -34,13 +42,12 @@ class Ship {
 }
 
 const gameBoard = (() => {
-    const errorInvalidPosition = "can't place your ship here";
+    const errorInvalidPosition = false
     let shipCounter = 1;
 
     const placeShip = value => {
         let playerShipArray = [];
-        axis = Math.round(Math.random())
-        if (shipCounter > 5) return "all ships placed"
+        if (shipCounter > 5) return false
         switch (shipCounter) {
             case 1:
                 if (!validPlacement(5, value, playerShipArray, shipCounter)) {
@@ -177,7 +184,7 @@ const gameBoard = (() => {
 
 function validPlacement (lengthShip, value, playerShipArray) {
     
-    if (!axis) {
+    if (axisSelection.textContent === "AXIS: X") {
         let findX = (Math.floor(value/10)*10) + 9; 
         for (let i = 0; i < lengthShip; i++) {
             if (playerGameBoardArray[value + i] !== 0 || 
@@ -203,11 +210,11 @@ function validPlacement (lengthShip, value, playerShipArray) {
     return true
 }
 
-gameBoard.placeShip(23)
-gameBoard.placeShip(11)
-gameBoard.placeShip(34)
-gameBoard.placeShip(0)
-gameBoard.placeShip(82)
+// gameBoard.placeShip(23)
+// gameBoard.placeShip(11)
+// gameBoard.placeShip(34)
+// gameBoard.placeShip(0)
+// gameBoard.placeShip(82)
 
 
 

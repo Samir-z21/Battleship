@@ -15,14 +15,22 @@ const shotMissedMp3 = document.querySelector('#shotMissed')
 const playerName = 'Samir';
 let cpuFinished = false;
 let oneTime = 0;
+let oneTimer = 0
 let message = '';
 let extra = '';
+let timer = 500
 
 
 function handleAttacks (cpuBox, index) {
 
     const declareWinner = document.createElement('div');
     declareWinner.classList.add('declareWinner');
+
+    if (oneTime !== 0) {
+        timer = 200
+    }
+
+    oneTimer = 1
 
     setTimeout(function () {
     if (cpuFinished || oneTime !== 0) return
@@ -172,7 +180,7 @@ function handleAttacks (cpuBox, index) {
         }
         
     }
-    }, 500)   
+    }, timer)   
 }
 
 

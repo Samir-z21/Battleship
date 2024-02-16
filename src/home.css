@@ -31,6 +31,35 @@ body {
     gap: 25px;
 }
 
+#introForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    height: 40vh;
+}
+
+#introForm label {
+    font-size: 30px;
+}
+
+#introForm input {
+    font-size: 20px;
+    font-weight: 800;
+    border-radius: 3px;
+    border: none;
+    height: 30px;
+    padding: 10px;
+}
+
+#introForm button {
+    height: 60px;
+    width: 150px;
+    font-size: 20px;
+}
+
+
 .messageBox {
     display: flex;
     justify-content: center;
@@ -64,14 +93,22 @@ body {
     font-weight: 1000;
 } 
 
-.boardsDisplay {
+.boardsDisplay,
+.personalBoard {
     display: grid;
     grid-template-columns: repeat(10, 45px);
     grid-template-rows:repeat(10, 45px);
     gap: 5px;
 }
 
-.boxDisplay {
+.selection {
+    background-color: rgb(163, 165, 164);
+}
+
+
+
+.boxDisplay,
+.personalBox {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -79,6 +116,15 @@ body {
     font-size: 2rem;
     max-height: 45px;
     max-width: 45px;
+}
+
+.personalBox {
+    cursor: pointer;
+}
+
+.personalBox img {
+    opacity: 0.7;
+    z-index: -2;
 }
 
 .enemyBoxes:hover {
@@ -118,6 +164,11 @@ body {
 .enemyBoxes.hit:hover,
 .enemyBoxes.boxDisplay.missedAttack:hover {
     background-color: rgb(255, 45, 45);
+    cursor: not-allowed;
+}
+
+.rejection:hover {
+    background-color: rgb(255, 74, 74);
     cursor: not-allowed;
 }
 
