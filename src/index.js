@@ -210,37 +210,6 @@ function validPlacement (lengthShip, value, playerShipArray) {
     return true
 }
 
-// gameBoard.placeShip(23)
-// gameBoard.placeShip(11)
-// gameBoard.placeShip(34)
-// gameBoard.placeShip(0)
-// gameBoard.placeShip(82)
-
-
-
-// gameBoard.receiveAttack(29, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
-// gameBoard.receiveAttack(42, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
-// gameBoard.receiveAttack(55, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
-// gameBoard.receiveAttack(25, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
-// gameBoard.receiveAttack(40, cpuGameBoardArray, cpuShipObjs, 'playerTurn')
-
-
-// generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-// generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-// generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-// generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-// generateCpuAttack(playerGameBoardArray, playerShipObjs, 'cpuTurn')
-
-
-
-
-// console.log(playerGameBoardArray)
-
-
-// console.log(gameBoard.receiveAttack(29))
-// console.log(gameBoard.endGameCheck())
-
-
 
 export {Ship, gameBoard, playerGameBoardArray, playerShipObjs, playerHeads}
 
